@@ -119,22 +119,24 @@ struct PetCharacterView: View {
         }
     }
 
+    private var iconName: String? {
+        switch mood {
+        case .morning: return "sun.max.fill"
+        case .noon: return "sparkles"
+        case .afternoon: return "cup.and.saucer.fill"
+        case .evening: return "sunset.fill"
+        case .night: return "moon.stars.fill"
+        case .charging: return "bolt.fill"
+        case .lowBattery: return "drop.fill"
+        case .reactHappy: return "heart.fill"
+        case .reactSurprised: return "exclamationmark"
+        case .reactSleepy: return nil
+        }
+    }
+
     @ViewBuilder
     private func accessory(for mood: PetMood) -> some View {
-        let icon: String?
-        switch mood {
-        case .morning: icon = "sun.max.fill"
-        case .noon: icon = "sparkles"
-        case .afternoon: icon = "cup.and.saucer.fill"
-        case .evening: icon = "sunset.fill"
-        case .night: icon = "moon.stars.fill"
-        case .charging: icon = "bolt.fill"
-        case .lowBattery: icon = "drop.fill"
-        case .reactHappy: icon = "heart.fill"
-        case .reactSurprised: icon = "exclamationmark"
-        case .reactSleepy: icon = nil
-        }
-        if let icon {
+        if let icon = iconName {
             Image(systemName: icon)
                 .font(.system(size: 12, weight: .medium))
                 .foregroundStyle(silverColor)

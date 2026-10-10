@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 enum MoodEngine {
     static func mood(
@@ -25,11 +26,12 @@ enum MoodEngine {
     }
 
     static func currentMood() -> PetMood {
-        let power = ProcessInfo.processInfo.powerState
+        let device = UIDevice.current
+        device.isBatteryMonitoringEnabled = true
         return mood(
             at: Date(),
-            isCharging: power.isCharging,
-            batteryLevel: power.batteryLevel
+            isCharging: device.batteryState == .charging || device.batteryState == .full,
+            batteryLevel: device.batteryLevel > 0 ? device.batteryLevel : -1
         )
     }
 }
