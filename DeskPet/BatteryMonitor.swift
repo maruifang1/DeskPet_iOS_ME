@@ -8,7 +8,8 @@ final class BatteryMonitor: ObservableObject {
 
     init() {
         UIDevice.current.isBatteryMonitoringEnabled = true
-        isCharging = isDeviceCharging
+        let state = UIDevice.current.batteryState
+        isCharging = state == .charging || state == .full
         batteryLevel = UIDevice.current.batteryLevel
 
         NotificationCenter.default.addObserver(
