@@ -7,9 +7,9 @@ final class BatteryMonitor: ObservableObject {
     @Published var batteryLevel: Float
 
     init() {
-        isCharging = ProcessInfo.processInfo.powerState.isCharging
-        batteryLevel = UIDevice.current.batteryLevel
         UIDevice.current.isBatteryMonitoringEnabled = true
+        isCharging = isDeviceCharging
+        batteryLevel = UIDevice.current.batteryLevel
 
         NotificationCenter.default.addObserver(
             self,
@@ -36,8 +36,13 @@ final class BatteryMonitor: ObservableObject {
     }
 
     @objc private func powerChanged() {
-        isCharging = ProcessInfo.processInfo.powerState.isCharging
+        isCharging = isDeviceCharging
         batteryLevel = UIDevice.current.batteryLevel
         WidgetCenter.shared.reloadTimelines(ofKind: AppGroupStore.kind)
+    }
+
+    private var isDeviceCharging: Bool {
+        let state = UIDevice.current.batteryState
+        return state == .charging || state == .full
     }
 }
